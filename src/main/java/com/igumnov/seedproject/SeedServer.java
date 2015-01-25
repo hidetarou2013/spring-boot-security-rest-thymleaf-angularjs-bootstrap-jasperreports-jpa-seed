@@ -47,17 +47,20 @@ public class SeedServer extends WebMvcConfigurerAdapter {
 
 		@Override
 		public void init(AuthenticationManagerBuilder auth) throws Exception {
-			auth.inMemoryAuthentication().withUser("demo").password("demo").roles("demo");
+			auth.inMemoryAuthentication().withUser("demo").password("demo")
+					.roles("demo");
 		}
 	}
 
 	@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-	protected static class ApplicationSecurity extends WebSecurityConfigurerAdapter {
+	protected static class ApplicationSecurity extends
+			WebSecurityConfigurerAdapter {
 
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
 			http.csrf().disable().authorizeRequests().antMatchers("/report")
 					.permitAll().antMatchers("/jasper/**").permitAll()
+					.antMatchers("/webjars/**").permitAll()
 					.antMatchers("/rest/**").permitAll().antMatchers("/js/**")
 					.permitAll().anyRequest().fullyAuthenticated().and()
 					.formLogin().loginPage("/login").failureUrl("/login?error")

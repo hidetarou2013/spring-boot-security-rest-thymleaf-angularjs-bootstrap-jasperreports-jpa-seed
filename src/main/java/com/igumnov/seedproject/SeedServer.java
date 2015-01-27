@@ -40,6 +40,7 @@ public class SeedServer extends WebMvcConfigurerAdapter {
 		return slr;
 	}
 
+	
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	@Configuration
 	protected static class AuthenticationSecurity extends

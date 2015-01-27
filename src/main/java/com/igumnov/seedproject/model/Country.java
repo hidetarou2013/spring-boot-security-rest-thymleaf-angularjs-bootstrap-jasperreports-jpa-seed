@@ -1,5 +1,6 @@
 package com.igumnov.seedproject.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Country {
+public class Country implements Serializable {
+	private static final long serialVersionUID = 7215298992738155751L;
 
 	@Id
 	private String name;
 	
-	@OneToMany (mappedBy="country")
+	@OneToMany(mappedBy="country")
 	private List<City> cities = new ArrayList<City>();
 
 	public String getName() {

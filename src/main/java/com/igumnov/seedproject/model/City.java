@@ -4,9 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 @Entity
-public class City {
+public class City implements Serializable {
+
+	private static final long serialVersionUID = 3977347517121289291L;
 
 	@Id
 	private String name;

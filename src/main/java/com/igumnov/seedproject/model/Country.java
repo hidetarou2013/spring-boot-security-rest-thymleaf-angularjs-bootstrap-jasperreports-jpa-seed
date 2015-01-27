@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -15,7 +17,7 @@ public class Country implements Serializable {
 	@Id
 	private String name;
 	
-	@OneToMany(mappedBy="country")
+	@OneToMany(mappedBy="country", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<City> cities = new ArrayList<City>();
 
 	public String getName() {

@@ -4,8 +4,23 @@
 	layout:decorator="layout">
 <body>
 	<div layout:fragment="content">
-		<h1>Hello world!</h1>
-		<br aaa>
+		<table class="table" ng-controller="CityCtrl">
+			<thead>
+				<tr>
+					<th th:text="#{city.name}"></th>
+					<th th:text="#{city.population}"></th>
+					<th th:text="#{city.country}"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="city in cities">
+					<td>{{city.name}}</td>
+					<td>{{city.population}}</td>
+					<td>{{city.country}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<script type="text/javascript" src="/js/city.js"></script>
 	</div>
 </body>
 </html>

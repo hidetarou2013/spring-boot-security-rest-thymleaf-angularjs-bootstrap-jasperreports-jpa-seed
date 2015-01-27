@@ -20,14 +20,26 @@ public class ApiService {
 	@Autowired
 	private CountryRepository countryRepository;
 
+	public void addCity(String cityName, String countryName, Long population) {
+    	City city = new City().setName(cityName).setPopulation(population);
+    	Country country = countryRepository.findOne(countryName);
+    	city.setCountry(country);
+    	country.addCity(city);
+    	cityRepository.save(city);
+		
+	}
+	
+	public void addCountry (String countryName) {
+    	Country country = new Country().setName(countryName);
+    	country = countryRepository.save(country);
+	}
+	
 	@PostConstruct
     public void init() {
     	logger.info("ApiService.init()");
-    	City city = new City().setName("Test").setPopulation(10000L);
-    	Country country = new Country().setName("USA");
-    	country = countryRepository.save(country);
-    	country.addCity(city);
-    	city.setCountry(country);
-    	cityRepository.save(city);
+    	addCountry("USA");
+    	addCity("Los Angeles","USA", 10000L);
+    	addCity("New York","USA", 20000L);
+    	addCity("Washington","USA", 30000L);
     }
 }

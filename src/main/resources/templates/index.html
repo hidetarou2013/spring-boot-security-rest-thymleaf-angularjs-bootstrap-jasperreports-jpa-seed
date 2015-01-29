@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="layout">
-<body>
+<body ng-controller="CityCtrl">
 	<div layout:fragment="content">
-		<table class="table" ng-controller="CityCtrl">
+		<table class="table" >
 			<thead>
 				<tr>
 					<th th:text="#{city.name}"></th>
@@ -20,6 +20,8 @@
 				</tr>
 			</tbody>
 		</table>
+		<button type="button" class="btn btn-lg btn-primary" th:text="#{get.report}" ng-click="report()"></button>
+		
 		<script type="text/javascript" src="/js/city.js"></script>
 	</div>
 </body>

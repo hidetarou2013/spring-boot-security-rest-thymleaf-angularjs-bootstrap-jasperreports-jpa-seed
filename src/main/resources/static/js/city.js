@@ -55,7 +55,7 @@ angular.module('com.igumnov.seedproject', [ 'ui.bootstrap', 'ngResource' ])
     });
 } ])
 
-.controller('CityCtrl', function($scope, City, Country) {
+.controller('CityCtrl', function($scope, $window,  City, Country) {
   City.query({}, function(data) {
       	var j=0;
         $scope.cities = data._embedded.all;
@@ -68,4 +68,12 @@ angular.module('com.igumnov.seedproject', [ 'ui.bootstrap', 'ngResource' ])
             
         }
   	});  
+
+	
+	$scope.report = function() {
+	    $window.location.href = '/report';
+	}
+
+  
+  
     });

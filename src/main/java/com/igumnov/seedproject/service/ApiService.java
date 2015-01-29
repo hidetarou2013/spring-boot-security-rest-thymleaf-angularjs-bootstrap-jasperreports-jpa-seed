@@ -1,6 +1,16 @@
 package com.igumnov.seedproject.service;
 
+import java.util.HashMap;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import com.igumnov.seedproject.model.City;
 import com.igumnov.seedproject.model.Country;
+import com.igumnov.seedproject.report.CustomJRDataSource;
 import com.igumnov.seedproject.repository.CityRepository;
 import com.igumnov.seedproject.repository.CountryRepository;
 
@@ -32,6 +43,15 @@ public class ApiService {
 	public void addCountry (String countryName) {
     	Country country = new Country().setName(countryName);
     	country = countryRepository.save(country);
+	}
+	
+	public void generateReport(List<City> cities) throws JRException {
+		JasperReport jasperReport;
+		JasperPrint jasperPrint;
+		jasperReport = JasperCompileManager.compileReport("src/main/resources/static/report/report.jrxml");
+		CustomJRDataSource<City> dataSource = new CustomJRDataSource<City>().initBy(cities);
+		jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(), dataSource);
+		JasperExportManager.exportReportToPdfFile(jasperPrint, "src/main/resources/static/report/report.pdf");
 	}
 	
 	@PostConstruct

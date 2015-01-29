@@ -1,79 +1,61 @@
 angular.module('com.igumnov.seedproject', [ 'ui.bootstrap', 'ngResource' ])
 
 .factory('City', [ '$resource', function($resource) {
-    return $resource('/rest/city/:resourceId', {
-	resourceId : '@id'
-    }, {
-	query : {
-	    method : 'GET',
-	    cache : false,
-	    isArray : false
-	},
-	add : {
-	    method : 'POST',
-	    cache : false,
-	    isArray : false
-	},
-	update : {
-	    method : 'PUT',
-	    cache : false,
-	    isArray : false
-	},
-	delete : {
-	    method : 'DELETE',
-	    cache : false,
-	    isArray : false
-	}	
-    });
-} ])
+	return $resource('/rest/city/:resourceId', {
+		resourceId : '@id'
+	}, {
+		query : {
+			method : 'GET',
+			cache : false,
+			isArray : false
+		}
 
+	});
+} ])
 
 .factory('Country', [ '$resource', function($resource) {
-    return $resource('/rest/city/:resourceId/country', {
-	resourceId : '@id'
-    }, {
-	query : {
-	    method : 'GET',
-	    cache : false,
-	    isArray : false
-	},
-	add : {
-	    method : 'POST',
-	    cache : false,
-	    isArray : false
-	},
-	update : {
-	    method : 'PUT',
-	    cache : false,
-	    isArray : false
-	},
-	delete : {
-	    method : 'DELETE',
-	    cache : false,
-	    isArray : false
-	}	
-    });
+	return $resource('/rest/city/:resourceId/country', {
+		resourceId : '@id'
+	}, {
+		query : {
+			method : 'GET',
+			cache : false,
+			isArray : false
+		}
+	});
 } ])
 
-.controller('CityCtrl', function($scope, $window,  City, Country) {
-  City.query({}, function(data) {
-      	var j=0;
-        $scope.cities = data._embedded.all;
-        var arrayLength =  $scope.cities.length;
-        for (var i = 0; i < arrayLength; i++) {
-            Country.query({resourceId : $scope.cities[i].name}, function(data) {
-        	$scope.cities[j].countryName = data.name;
-        	++j;
-            } );
-            
-        }
-  	});  
+.factory('Report', [ '$resource', function($resource) {
+	return $resource('/ajax/report', {}, {
+		generate : {
+			method : 'POST',
+			cache : false,
+			isArray : false
+		}
+	});
+} ])
 
-	
+.controller('CityCtrl', function($scope, $window, City, Country, Report) {
+	City.query({}, function(data) {
+		var j = 0;
+		$scope.cities = data._embedded.all;
+		var arrayLength = $scope.cities.length;
+		for (var i = 0; i < arrayLength; i++) {
+			Country.query({
+				resourceId : $scope.cities[i].name
+			}, function(data) {
+				$scope.cities[j].countryName = data.name;
+				++j;
+			});
+
+		}
+	});
+
 	$scope.report = function() {
-	    $window.location.href = '/report';
+		Report.generate({}, $scope.cities, function(data) {
+			$window.location.href = '/report/report.pdf';
+		}, function(err) {
+			alert(err.data.message);
+		});
 	}
-
-  
-  
-    });
+});

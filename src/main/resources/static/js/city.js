@@ -27,11 +27,45 @@ angular.module('com.igumnov.seedproject', [ 'ui.bootstrap', 'ngResource' ])
     });
 } ])
 
-.controller('CityCtrl', function($scope, City) {
-  City.query({}, function(data) {
-        $scope.cities = data._embedded.all;
-    	
+
+.factory('Country', [ '$resource', function($resource) {
+    return $resource('/rest/city/:resourceId/country', {
+	resourceId : '@id'
+    }, {
+	query : {
+	    method : 'GET',
+	    cache : false,
+	    isArray : false
+	},
+	add : {
+	    method : 'POST',
+	    cache : false,
+	    isArray : false
+	},
+	update : {
+	    method : 'PUT',
+	    cache : false,
+	    isArray : false
+	},
+	delete : {
+	    method : 'DELETE',
+	    cache : false,
+	    isArray : false
+	}	
     });
-    //$scope.cities = cities._embedded.all;
- //   console.log(cities._embedded.all);
- });
+} ])
+
+.controller('CityCtrl', function($scope, City, Country) {
+  City.query({}, function(data) {
+      	var j=0;
+        $scope.cities = data._embedded.all;
+        var arrayLength =  $scope.cities.length;
+        for (var i = 0; i < arrayLength; i++) {
+            Country.query({resourceId : $scope.cities[i].name}, function(data) {
+        	$scope.cities[j].countryName = data.name;
+        	++j;
+            } );
+            
+        }
+  	});  
+    });

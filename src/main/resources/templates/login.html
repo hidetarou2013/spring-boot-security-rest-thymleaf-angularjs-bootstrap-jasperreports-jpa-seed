@@ -4,18 +4,9 @@
 	layout:decorator="layout">
 <body>
 	<div layout:fragment="content">
-		<p th:if="${param.logout}" class="alert" th:text="#{login.logout}"></p>
-		<p th:if="${param.error}" class="alert alert-error" th:text="#{login.error}"></p>
-		<h2 th:text="#{login.login}"></h2>
-		<form name="form" th:action="@{/login}" method="POST">
-			<fieldset>
-				<input type="text" name="username" value=""
-					th:placeholder="#{login.username}" /> <input type="password"
-					name="password" th:placeholder="#{login.password}" /> <input
-					type="submit" id="login" th:value="#{login.submit.button}"
-					class="btn btn-primary" />
-			</fieldset>
-		</form>
+		<div ng-controller="LoginCtrl">
+		</div>
+		<script type="text/javascript" src="/js/login.js"></script>
 	</div>
 </body>
 </html>

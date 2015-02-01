@@ -20,7 +20,7 @@ public class AjaxController {
 	private ApiService apiService;
 	
     @Secured({ "ROLE_demo" })
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     public List<City> generateReport(@RequestBody List<City> cities) throws JRException {
     	apiService.generateReport(cities);
     	return cities;

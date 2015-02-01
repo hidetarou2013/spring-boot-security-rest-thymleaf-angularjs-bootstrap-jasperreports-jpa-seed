@@ -62,6 +62,7 @@ public class SeedServer extends WebMvcConfigurerAdapter {
 			http.csrf().disable().authorizeRequests().antMatchers("/report")
 					.permitAll().antMatchers("/jasper/**").permitAll()
 					.antMatchers("/webjars/**").permitAll()
+					.antMatchers("/ng-templates/**").permitAll()
 					.antMatchers("/rest/**").permitAll().antMatchers("/js/**")
 					.permitAll().anyRequest().fullyAuthenticated().and()
 					.formLogin().loginPage("/login").failureUrl("/login?error")

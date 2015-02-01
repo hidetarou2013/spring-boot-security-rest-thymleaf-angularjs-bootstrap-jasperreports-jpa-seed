@@ -48,18 +48,21 @@ public class ApiService {
 	public void generateReport(List<City> cities) throws JRException {
 		JasperReport jasperReport;
 		JasperPrint jasperPrint;
-		jasperReport = JasperCompileManager.compileReport("src/main/resources/static/report/report.jrxml");
+		jasperReport = JasperCompileManager.compileReport("src/main/resources/static/jasper/report.jrxml");
 		CustomJRDataSource<City> dataSource = new CustomJRDataSource<City>().initBy(cities);
 		jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(), dataSource);
-		JasperExportManager.exportReportToPdfFile(jasperPrint, "src/main/resources/static/report/report.pdf");
+		JasperExportManager.exportReportToPdfFile(jasperPrint, "src/main/resources/static/jasper/report.pdf");
 	}
 	
 	@PostConstruct
     public void init() {
     	logger.info("ApiService.init()");
     	addCountry("USA");
+    	addCountry("RUSSIA");
     	addCity("Los Angeles","USA", 10000L);
     	addCity("New York","USA", 20000L);
     	addCity("Washington","USA", 30000L);
+    	addCity("Moscow","RUSSIA", 90000L);
+    	addCity("Novosibirsk","RUSSIA", 10000L);
     }
 }

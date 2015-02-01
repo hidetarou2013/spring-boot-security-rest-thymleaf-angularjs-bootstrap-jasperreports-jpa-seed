@@ -30,7 +30,7 @@ angular.module('com.igumnov.seedproject', [ 'ui.bootstrap', 'ngResource' ])
 		generate : {
 			method : 'POST',
 			cache : false,
-			isArray : false
+			isArray : true
 		}
 	});
 } ])
@@ -53,7 +53,7 @@ angular.module('com.igumnov.seedproject', [ 'ui.bootstrap', 'ngResource' ])
 
 	$scope.report = function() {
 		Report.generate({}, $scope.cities, function(data) {
-			$window.location.href = '/report/report.pdf';
+			$window.location.href = '/jasper/report.pdf';
 		}, function(err) {
 			alert(err.data.message);
 		});

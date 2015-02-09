@@ -11,8 +11,8 @@ import com.igumnov.seedproject.model.Country;
 public class RepositoryConfiguration extends RepositoryRestMvcConfiguration {
     @Override
     protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-        config.exposeIdsFor(City.class,Country.class);
-        config.setBaseUri("/rest");
+	config.exposeIdsFor(City.class, Country.class);
+	config.setBaseUri("/rest");
 
     }
 }

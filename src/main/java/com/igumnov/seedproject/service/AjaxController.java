@@ -16,15 +16,14 @@ import com.igumnov.seedproject.model.City;
 @RestController
 @RequestMapping("/ajax/report")
 public class AjaxController {
-	@Autowired
-	private ApiService apiService;
-	
-    @Secured({ "ROLE_demo" })
-    @RequestMapping( method = RequestMethod.POST)
-    public List<City> generateReport(@RequestBody List<City> cities) throws JRException {
-    	apiService.generateReport(cities);
-    	return cities;
-    }
+    @Autowired
+    private ApiService apiService;
 
+    @Secured({ "ROLE_demo" })
+    @RequestMapping(method = RequestMethod.POST)
+    public List<City> generateReport(@RequestBody List<City> cities) throws JRException {
+	apiService.generateReport(cities);
+	return cities;
+    }
 
 }

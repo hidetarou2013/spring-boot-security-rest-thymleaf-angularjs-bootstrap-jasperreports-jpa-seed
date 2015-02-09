@@ -24,53 +24,43 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @ComponentScan("com.igumnov.seedproject")
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SeedServer extends WebMvcConfigurerAdapter {
-	public static void main(String[] args) throws Exception {
-		new SpringApplicationBuilder(SeedServer.class).run(args);
+    public static void main(String[] args) throws Exception {
+	new SpringApplicationBuilder(SeedServer.class).run(args);
+    }
+
+    @Bean
+    public ApplicationSecurity applicationSecurity() {
+	return new ApplicationSecurity();
+    }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+	SessionLocaleResolver slr = new SessionLocaleResolver();
+	slr.setDefaultLocale(Locale.ENGLISH);
+	return slr;
+    }
+
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    @Configuration
+    protected static class AuthenticationSecurity extends GlobalAuthenticationConfigurerAdapter {
+
+	@Override
+	public void init(AuthenticationManagerBuilder auth) throws Exception {
+	    auth.inMemoryAuthentication().withUser("demo").password("demo").roles("demo");
 	}
+    }
 
-	@Bean
-	public ApplicationSecurity applicationSecurity() {
-		return new ApplicationSecurity();
+    @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+    protected static class ApplicationSecurity extends WebSecurityConfigurerAdapter {
+
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+	    http.csrf().disable().authorizeRequests().antMatchers("/report").permitAll().antMatchers("/jasper/**").permitAll().antMatchers("/webjars/**")
+		    .permitAll().antMatchers("/ng-templates/**").permitAll().antMatchers("/rest/**").permitAll().antMatchers("/js/**").permitAll().anyRequest()
+		    .fullyAuthenticated().and().formLogin().loginPage("/login").failureUrl("/login?error").permitAll().and().logout()
+		    .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll().logoutSuccessUrl("/login?logout");
+
 	}
-
-	@Bean
-	public LocaleResolver localeResolver() {
-		SessionLocaleResolver slr = new SessionLocaleResolver();
-		slr.setDefaultLocale(Locale.ENGLISH);
-		return slr;
-	}
-
-	
-	@Order(Ordered.HIGHEST_PRECEDENCE)
-	@Configuration
-	protected static class AuthenticationSecurity extends
-			GlobalAuthenticationConfigurerAdapter {
-
-		@Override
-		public void init(AuthenticationManagerBuilder auth) throws Exception {
-			auth.inMemoryAuthentication().withUser("demo").password("demo")
-					.roles("demo");
-		}
-	}
-
-	@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-	protected static class ApplicationSecurity extends
-			WebSecurityConfigurerAdapter {
-
-		@Override
-		public void configure(HttpSecurity http) throws Exception {
-			http.csrf().disable().authorizeRequests().antMatchers("/report")
-					.permitAll().antMatchers("/jasper/**").permitAll()
-					.antMatchers("/webjars/**").permitAll()
-					.antMatchers("/ng-templates/**").permitAll()
-					.antMatchers("/rest/**").permitAll().antMatchers("/js/**")
-					.permitAll().anyRequest().fullyAuthenticated().and()
-					.formLogin().loginPage("/login").failureUrl("/login?error")
-					.permitAll().and().logout()
-					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-					.permitAll().logoutSuccessUrl("/login?logout");
-
-		}
-	}
+    }
 
 }
